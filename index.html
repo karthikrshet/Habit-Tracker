@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Habit Tracker</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        body {
+            background: linear-gradient(to right, #74ABE2, #5563DE);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+            color: #fff;
+        }
+
+        .container {
+            background: rgba(255, 255, 255, 0.15);
+            padding: 30px;
+            border-radius: 10px;
+            width: 100%;
+            max-width: 600px;
+            text-align: center;
+        }
+
+        h1 {
+            margin-bottom: 20px;
+        }
+
+        input[type="text"] {
+            width: 80%;
+            padding: 10px;
+            font-size: 16px;
+            border-radius: 5px;
+            border: none;
+        }
+
+        button {
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            background-color: #ff7b54;
+            color: #fff;
+            cursor: pointer;
+            font-size: 16px;
+            margin-top: 10px;
+        }
+
+        button:hover {
+            background-color: #ff5722;
+        }
+
+        .habits {
+            margin-top: 20px;
+        }
+
+        .habit {
+            background-color: rgba(255,255,255,0.8);
+            color: #000;
+            padding: 10px;
+            border-radius: 5px;
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .habit button {
+            background-color: #5563DE;
+            margin-left: 5px;
+        }
+
+        footer {
+            margin-top: 30px;
+            color: #fff;
+            font-size: 16px;
+            text-align: center;
+        }
+
+        footer strong {
+            color: #ffdd57;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+        <h1>Habit Tracker</h1>
+
+        <input type="text" id="habitInput" placeholder="Enter your habit..." />
+        <br />
+        <button id="addHabitBtn">Add Habit</button>
+
+        <div class="habits" id="habitsContainer"></div>
+    </div>
+
+    <footer>
+        Developed by <strong>Karthik Shet</strong>
+    </footer>
+
+    <script>
+        const habitInput = document.getElementById('habitInput');
+        const addHabitBtn = document.getElementById('addHabitBtn');
+        const habitsContainer = document.getElementById('habitsContainer');
+
+        let habits = [];
+
+        function renderHabits() {
+            habitsContainer.innerHTML = '';
+            habits.forEach((habit, index) => {
+                const habitEl = document.createElement('div');
+                habitEl.className = 'habit';
+                habitEl.innerHTML = `
+                    <span>${habit}</span>
+                    <div>
+                        <button onclick="markDone(${index})">✅</button>
+                        <button onclick="deleteHabit(${index})">🗑️</button>
+                    </div>
+                `;
+                if (habit.done) habitEl.style.textDecoration = 'line-through';
+                habitsContainer.appendChild(habitEl);
+            });
+        }
+
+        function markDone(index) {
+            habits[index] = { text: habits[index].text || habits[index], done: true };
+            renderHabits();
+        }
+
+        function deleteHabit(index) {
+            habits.splice(index, 1);
+            renderHabits();
+        }
+
+        addHabitBtn.addEventListener('click', () => {
+            const habitText = habitInput.value.trim();
+            if (habitText === "") return alert('Please enter a habit.');
+            habits.push(habitText);
+            habitInput.value = '';
+            renderHabits();
+        });
+    </script>
+
+</body>
+
+</html>
